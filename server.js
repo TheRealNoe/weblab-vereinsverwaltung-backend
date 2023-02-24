@@ -52,7 +52,6 @@ function main() {
 		const dataValid = ajv.validate(memberSchema, req.body);
 
 		if (dataValid) {
-			console.log("valid");
 			const client = await mongoClient.connect(
 				process.env.MONGODB_CONN_STRING
 			);
@@ -62,7 +61,6 @@ function main() {
 
 			res.status(201);
 		} else {
-			console.log("invalid");
 			res.status(400);
 		}
 

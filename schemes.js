@@ -5,7 +5,7 @@ const memberSchema = {
 		name: { type: "string" },
 		birthday: { type: "string", format: "date" },
 		street: { type: "string" },
-		postcode: { type: "number" },
+		postcode: { type: "string" },
 		city: { type: "string" },
 		email: { type: "string" },
 	},
