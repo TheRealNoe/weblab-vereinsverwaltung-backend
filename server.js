@@ -30,14 +30,14 @@ async function main() {
 	server.get("/member", async (req, res) => {
 		const collection = db.collection("member");
 		const result = await collection.find({}).toArray();
-		res.send(result);
+		res.send(result).status(200);
 		res.end();
 	});
 
 	server.get("/member/:id", async (req, res) => {
 		const collection = db.collection("member");
 
-		result = null;
+		let result = null;
 
 		try {
 			result = await collection.findOne({
@@ -103,20 +103,27 @@ async function main() {
 	server.get("/event", async (req, res) => {
 		const collection = db.collection("event");
 		const result = await collection.find({}).toArray();
-		res.send(result);
+		res.send(result).status(200);
 		res.end();
 	});
 
 	server.get("/event/:id", async (req, res) => {
 		const collection = db.collection("event");
-		const result = await collection.findOne({
-			_id: new ObjectId(req.params.id),
-		});
 
-		if (result) {
-			res.send(result);
-		} else {
-			res.status(404);
+		let result = null;
+
+		try {
+			result = await collection.findOne({
+				_id: new ObjectId(req.params.id),
+			});
+
+			if (result) {
+				res.send(result).status(200);
+			} else {
+				res.send("Not found").status(404);
+			}
+		} catch (error) {
+			res.send("Not found").status(404);
 		}
 
 		res.end();
@@ -137,23 +144,59 @@ async function main() {
 		res.end();
 	});
 
+	server.put("/event/:id", async (req, res) => {
+		const dataValid = ajv.validate(eventSchema, req.body);
+
+		if (dataValid) {
+			const collection = db.collection("event");
+			await collection.findOneAndReplace(
+				{
+					_id: new ObjectId(req.params.id),
+				},
+				req.body
+			);
+
+			res.status(201);
+		} else {
+			res.status(400);
+		}
+
+		res.end();
+	});
+
+	server.delete("/event/:id", async (req, res) => {
+		const collection = db.collection("event");
+		collection.deleteOne({
+			_id: new ObjectId(req.params.id),
+		});
+		res.status(204);
+		res.end();
+	});
+
 	server.get("/resource", async (req, res) => {
 		const collection = db.collection("resource");
 		const result = await collection.find({}).toArray();
 		res.send(result);
-		res.end();
+		res.end().status(200);
 	});
 
 	server.get("/resource/:id", async (req, res) => {
 		const collection = db.collection("resource");
-		const result = await collection.findOne({
-			_id: new ObjectId(req.params.id),
-		});
 
-		if (result) {
-			res.send(result);
-		} else {
-			res.status(404);
+		let result = null;
+
+		try {
+			result = await collection.findOne({
+				_id: new ObjectId(req.params.id),
+			});
+
+			if (result) {
+				res.send(result).status(200);
+			} else {
+				res.status(404);
+			}
+		} catch (error) {
+			res.send("Not found").status(404);
 		}
 
 		res.end();
@@ -171,6 +214,35 @@ async function main() {
 			res.status(400);
 		}
 
+		res.end();
+	});
+
+	server.put("/resource/:id", async (req, res) => {
+		const dataValid = ajv.validate(resourceSchema, req.body);
+
+		if (dataValid) {
+			const collection = db.collection("resource");
+			await collection.findOneAndReplace(
+				{
+					_id: new ObjectId(req.params.id),
+				},
+				req.body
+			);
+
+			res.status(201);
+		} else {
+			res.status(400);
+		}
+
+		res.end();
+	});
+
+	server.delete("/resource/:id", async (req, res) => {
+		const collection = db.collection("resource");
+		collection.deleteOne({
+			_id: new ObjectId(req.params.id),
+		});
+		res.status(204);
 		res.end();
 	});
 

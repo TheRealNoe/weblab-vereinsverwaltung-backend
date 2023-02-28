@@ -15,13 +15,13 @@ const memberSchema = {
 const eventSchema = {
 	type: "object",
 	properties: {
-		name: { type: "string" },
-		location: { type: "string" },
-		time: { type: "string", format: "date-time" },
-		duration: { type: "number" },
+		name: { type: "string", minLength: 2 },
+		location: { type: "string", minLength: 2 },
+		time: { type: "string", format: "date" },
+		duration: { type: "string" },
 		information: { type: "string" },
 	},
-	required: ["name", "location"],
+	required: ["name", "location", "time"],
 };
 
 const resourceSchema = {
