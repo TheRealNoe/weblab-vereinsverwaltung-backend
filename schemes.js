@@ -1,13 +1,13 @@
 const memberSchema = {
 	type: "object",
 	properties: {
-		prename: { type: "string" },
-		name: { type: "string" },
+		prename: { type: "string", minLength: 2 },
+		name: { type: "string", minLength: 2 },
 		birthday: { type: "string", format: "date" },
-		street: { type: "string" },
-		postcode: { type: "string" },
-		city: { type: "string" },
-		email: { type: "string" },
+		street: { type: "string", minLength: 5 },
+		postcode: { type: "string", minLength: 4 },
+		city: { type: "string", minLength: 2 },
+		email: { type: "string", format: "email" },
 	},
 	required: ["prename", "name", "birthday"],
 };

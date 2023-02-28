@@ -36,13 +36,20 @@ async function main() {
 
 	server.get("/member/:id", async (req, res) => {
 		const collection = db.collection("member");
-		const result = await collection.findOne({
-			_id: new ObjectId(req.params.id),
-		});
 
-		if (result) {
-			res.send(result).status(200);
-		} else {
+		result = null;
+
+		try {
+			result = await collection.findOne({
+				_id: new ObjectId(req.params.id),
+			});
+
+			if (result) {
+				res.send(result).status(200);
+			} else {
+				res.send("Not found").status(404);
+			}
+		} catch (error) {
 			res.send("Not found").status(404);
 		}
 
