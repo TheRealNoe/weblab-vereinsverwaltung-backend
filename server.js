@@ -1,254 +1,43 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
 const bodyParser = require("body-parser");
-const Ajv = require("ajv");
-const addFormats = require("ajv-formats");
-const ajv = new Ajv();
-addFormats(ajv);
-const { memberSchema, eventSchema, resourceSchema } = require("./schemes.js");
+const routes = require("./routes");
 
-const mongoClient = require("mongodb").MongoClient;
-const { ObjectId } = require("mongodb");
+const server = express();
+server.use(bodyParser.json());
+server.use(cors({ origin: "http://localhost:4200" }));
 
-let client, db;
+server.get("/member", routes.getMembers);
 
-async function main() {
-	let server = express();
+server.get("/member/:id", routes.getMember);
 
-	server.use(bodyParser.json());
-	server.use(cors({ origin: "http://localhost:4200" }));
+server.post("/member", routes.postMember);
 
-	try {
-		client = await mongoClient.connect(process.env.MONGODB_CONN_STRING);
-		db = client.db(process.env.MONGODB_NAME);
-	} catch (e) {
-		console.error(e);
-	}
+server.put("/member/:id", routes.putMember);
 
-	server.get("/member", async (req, res) => {
-		const collection = db.collection("member");
-		const result = await collection.find({}).toArray();
-		res.send(result).status(200);
-		res.end();
-	});
+server.delete("/member/:id", routes.deleteMember);
 
-	server.get("/member/:id", async (req, res) => {
-		const collection = db.collection("member");
+server.get("/event", routes.getEvents);
 
-		let result = null;
+server.get("/event/:id", routes.getEvent);
 
-		try {
-			result = await collection.findOne({
-				_id: new ObjectId(req.params.id),
-			});
+server.post("/event", routes.postEvent);
 
-			if (result) {
-				res.send(result).status(200);
-			} else {
-				res.send("Not found").status(404);
-			}
-		} catch (error) {
-			res.send("Not found").status(404);
-		}
+server.put("/event/:id", routes.putEvent);
 
-		res.end();
-	});
+server.delete("/event/:id", routes.deleteEvent);
 
-	server.post("/member", async (req, res) => {
-		const dataValid = ajv.validate(memberSchema, req.body);
+server.get("/resource", routes.getResources);
 
-		if (dataValid) {
-			const collection = db.collection("member");
-			await collection.insertOne(req.body);
+server.get("/resource/:id", routes.getResource);
 
-			res.status(201);
-		} else {
-			res.status(400);
-		}
+server.post("/resource", routes.postResource);
 
-		res.end();
-	});
+server.put("/resource/:id", routes.putResource);
 
-	server.put("/member/:id", async (req, res) => {
-		const dataValid = ajv.validate(memberSchema, req.body);
+server.delete("/resource/:id", routes.deleteResource);
 
-		if (dataValid) {
-			const collection = db.collection("member");
-			await collection.findOneAndReplace(
-				{
-					_id: new ObjectId(req.params.id),
-				},
-				req.body
-			);
-
-			res.status(201);
-		} else {
-			res.status(400);
-		}
-
-		res.end();
-	});
-
-	server.delete("/member/:id", async (req, res) => {
-		const collection = db.collection("member");
-		collection.deleteOne({
-			_id: new ObjectId(req.params.id),
-		});
-		res.status(204);
-		res.end();
-	});
-
-	server.get("/event", async (req, res) => {
-		const collection = db.collection("event");
-		const result = await collection.find({}).toArray();
-		res.send(result).status(200);
-		res.end();
-	});
-
-	server.get("/event/:id", async (req, res) => {
-		const collection = db.collection("event");
-
-		let result = null;
-
-		try {
-			result = await collection.findOne({
-				_id: new ObjectId(req.params.id),
-			});
-
-			if (result) {
-				res.send(result).status(200);
-			} else {
-				res.send("Not found").status(404);
-			}
-		} catch (error) {
-			res.send("Not found").status(404);
-		}
-
-		res.end();
-	});
-
-	server.post("/event", async (req, res) => {
-		const dataValid = ajv.validate(eventSchema, req.body);
-
-		if (dataValid) {
-			const collection = db.collection("event");
-			await collection.insertOne(req.body);
-
-			res.status(201);
-		} else {
-			res.status(400);
-		}
-
-		res.end();
-	});
-
-	server.put("/event/:id", async (req, res) => {
-		const dataValid = ajv.validate(eventSchema, req.body);
-
-		if (dataValid) {
-			const collection = db.collection("event");
-			await collection.findOneAndReplace(
-				{
-					_id: new ObjectId(req.params.id),
-				},
-				req.body
-			);
-
-			res.status(201);
-		} else {
-			res.status(400);
-		}
-
-		res.end();
-	});
-
-	server.delete("/event/:id", async (req, res) => {
-		const collection = db.collection("event");
-		collection.deleteOne({
-			_id: new ObjectId(req.params.id),
-		});
-		res.status(204);
-		res.end();
-	});
-
-	server.get("/resource", async (req, res) => {
-		const collection = db.collection("resource");
-		const result = await collection.find({}).toArray();
-		res.send(result);
-		res.end().status(200);
-	});
-
-	server.get("/resource/:id", async (req, res) => {
-		const collection = db.collection("resource");
-
-		let result = null;
-
-		try {
-			result = await collection.findOne({
-				_id: new ObjectId(req.params.id),
-			});
-
-			if (result) {
-				res.send(result).status(200);
-			} else {
-				res.status(404);
-			}
-		} catch (error) {
-			res.send("Not found").status(404);
-		}
-
-		res.end();
-	});
-
-	server.post("/resource", async (req, res) => {
-		const dataValid = ajv.validate(resourceSchema, req.body);
-
-		if (dataValid) {
-			const collection = db.collection("resource");
-			await collection.insertOne(req.body);
-
-			res.status(201);
-		} else {
-			res.status(400);
-		}
-
-		res.end();
-	});
-
-	server.put("/resource/:id", async (req, res) => {
-		const dataValid = ajv.validate(resourceSchema, req.body);
-
-		if (dataValid) {
-			const collection = db.collection("resource");
-			await collection.findOneAndReplace(
-				{
-					_id: new ObjectId(req.params.id),
-				},
-				req.body
-			);
-
-			res.status(201);
-		} else {
-			res.status(400);
-		}
-
-		res.end();
-	});
-
-	server.delete("/resource/:id", async (req, res) => {
-		const collection = db.collection("resource");
-		collection.deleteOne({
-			_id: new ObjectId(req.params.id),
-		});
-		res.status(204);
-		res.end();
-	});
-
-	server.listen(8000, () => {
-		console.log("Backend is running...");
-	});
-}
-
-main();
+server.listen(8000, () => {
+	console.log("Backend is running...");
+});
