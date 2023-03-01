@@ -27,12 +27,12 @@ const eventSchema = {
 const resourceSchema = {
 	type: "object",
 	properties: {
-		name: { type: "string" },
+		name: { type: "string", minLength: 2 },
+		amount: { type: "number", minimum: 0, maximum: 10000000 },
+		location: { type: "string", minLength: 2 },
 		information: { type: "string" },
-		amount: { type: "number" },
-		location: { type: "string" },
 	},
-	required: ["name", "amount"],
+	required: ["name", "amount", "location"],
 };
 
 module.exports = { memberSchema, eventSchema, resourceSchema };
