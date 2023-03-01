@@ -2,41 +2,44 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const middleware = require("./middleware");
 const routes = require("./routes");
 
 const server = express();
 server.use(bodyParser.json());
 server.use(cors({ origin: "http://localhost:4200" }));
 
-server.get("/member", routes.getMembers);
+server.post("/api/v1/login", routes.login);
 
-server.get("/member/:id", routes.getMember);
+server.get("/api/v1/member", routes.getMembers);
 
-server.post("/member", routes.postMember);
+server.get("/api/v1/member/:id", routes.getMember);
 
-server.put("/member/:id", routes.putMember);
+server.post("/api/v1/member", routes.postMember);
 
-server.delete("/member/:id", routes.deleteMember);
+server.put("/api/v1/member/:id", routes.putMember);
 
-server.get("/event", routes.getEvents);
+server.delete("/api/v1/member/:id", routes.deleteMember);
 
-server.get("/event/:id", routes.getEvent);
+server.get("/api/v1/event", routes.getEvents);
 
-server.post("/event", routes.postEvent);
+server.get("/api/v1/event/:id", routes.getEvent);
 
-server.put("/event/:id", routes.putEvent);
+server.post("/api/v1/event", routes.postEvent);
 
-server.delete("/event/:id", routes.deleteEvent);
+server.put("/api/v1/event/:id", routes.putEvent);
 
-server.get("/resource", routes.getResources);
+server.delete("/api/v1/event/:id", routes.deleteEvent);
 
-server.get("/resource/:id", routes.getResource);
+server.get("/api/v1/resource", routes.getResources);
 
-server.post("/resource", routes.postResource);
+server.get("/api/v1/resource/:id", routes.getResource);
 
-server.put("/resource/:id", routes.putResource);
+server.post("/api/v1/resource", routes.postResource);
 
-server.delete("/resource/:id", routes.deleteResource);
+server.put("/api/v1/resource/:id", routes.putResource);
+
+server.delete("/api/v1/resource/:id", routes.deleteResource);
 
 server.listen(8000, () => {
 	console.log("Backend is running...");

@@ -11,6 +11,52 @@ addFormats(ajv);
 const { memberSchema, eventSchema, resourceSchema } = require("./schemes.js");
 
 module.exports = {
+	login: async (req, res) => {
+		const { username, password } = req.body;
+
+		if (!(username && password)) {
+			res.send("Invalid Credentials").status(400);
+			res.end();
+		} else {
+			await dbUtil.connectToDB(async function (db, err) {
+				if (!err) {
+					let user = await db
+						.collection("user")
+						.findOne({ username: username });
+					if (
+						user &&
+						(await bcrypt.compare(password, user.password))
+					) {
+						const token = jwt.sign(
+							{ username: user.username },
+							process.env.TOKEN_KEY,
+							{
+								expiresIn: "2h",
+							}
+						);
+
+						res.json({
+							success: true,
+							message: "Authentication successful",
+							user: {
+								username: user.username,
+								token: token,
+							},
+						}).status(200);
+					} else {
+						res.json({
+							success: false,
+							message: "Authentication failed",
+						}).status(400);
+					}
+				} else {
+					res.status(400);
+				}
+				res.end();
+			});
+		}
+	},
+
 	getMembers: async (req, res) => {
 		dbUtil.connectToDB(async function (db, err) {
 			const collection = db.collection("member");

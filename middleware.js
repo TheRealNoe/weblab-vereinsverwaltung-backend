@@ -8,19 +8,19 @@ const verifyToken = (req, res, next) => {
 
 	if (!token) {
 		return res
-			.status(403)
 			.json({
 				success: false,
 				message: "A token is required for authentication",
-			});
+			})
+			.status(403);
 	}
 	try {
 		const decoded = jwt.verify(token, config.TOKEN_KEY);
 		req.user = decoded;
 	} catch (err) {
 		return res
-			.status(401)
-			.json({ success: false, message: "Invalid Token" });
+			.json({ success: false, message: "Invalid Token" })
+			.status(401);
 	}
 	return next();
 };
