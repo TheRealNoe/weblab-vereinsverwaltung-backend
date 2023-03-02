@@ -15,31 +15,39 @@ server.get("/api/v1/member", middleware.verifyToken, routes.getMembers);
 
 server.get("/api/v1/member/:id", middleware.verifyToken, routes.getMember);
 
-server.post("/api/v1/member", routes.postMember);
+server.post("/api/v1/member", middleware.verifyToken, routes.postMember);
 
-server.put("/api/v1/member/:id", routes.putMember);
+server.put("/api/v1/member/:id", middleware.verifyToken, routes.putMember);
 
-server.delete("/api/v1/member/:id", routes.deleteMember);
+server.delete(
+	"/api/v1/member/:id",
+	middleware.verifyToken,
+	routes.deleteMember
+);
 
-server.get("/api/v1/event", routes.getEvents);
+server.get("/api/v1/event", middleware.verifyToken, routes.getEvents);
 
-server.get("/api/v1/event/:id", routes.getEvent);
+server.get("/api/v1/event/:id", middleware.verifyToken, routes.getEvent);
 
-server.post("/api/v1/event", routes.postEvent);
+server.post("/api/v1/event", middleware.verifyToken, routes.postEvent);
 
-server.put("/api/v1/event/:id", routes.putEvent);
+server.put("/api/v1/event/:id", middleware.verifyToken, routes.putEvent);
 
-server.delete("/api/v1/event/:id", routes.deleteEvent);
+server.delete("/api/v1/event/:id", middleware.verifyToken, routes.deleteEvent);
 
-server.get("/api/v1/resource", routes.getResources);
+server.get("/api/v1/resource", middleware.verifyToken, routes.getResources);
 
-server.get("/api/v1/resource/:id", routes.getResource);
+server.get("/api/v1/resource/:id", middleware.verifyToken, routes.getResource);
 
-server.post("/api/v1/resource", routes.postResource);
+server.post("/api/v1/resource", middleware.verifyToken, routes.postResource);
 
-server.put("/api/v1/resource/:id", routes.putResource);
+server.put("/api/v1/resource/:id", middleware.verifyToken, routes.putResource);
 
-server.delete("/api/v1/resource/:id", routes.deleteResource);
+server.delete(
+	"/api/v1/resource/:id",
+	middleware.verifyToken,
+	routes.deleteResource
+);
 
 server.listen(8000, () => {
 	console.log("Backend is running...");

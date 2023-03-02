@@ -109,12 +109,16 @@ module.exports = {
 
 			if (dataValid) {
 				const collection = db.collection("member");
-				await collection.findOneAndReplace(
-					{
-						_id: new ObjectId(req.params.id),
-					},
-					req.body
-				);
+				try {
+					await collection.findOneAndReplace(
+						{
+							_id: new ObjectId(req.params.id),
+						},
+						req.body
+					);
+				} catch (error) {
+					res.status(404).send("Not found");
+				}
 
 				res.status(201);
 			} else {
@@ -197,12 +201,17 @@ module.exports = {
 
 			if (dataValid) {
 				const collection = db.collection("event");
-				await collection.findOneAndReplace(
-					{
-						_id: new ObjectId(req.params.id),
-					},
-					req.body
-				);
+
+				try {
+					await collection.findOneAndReplace(
+						{
+							_id: new ObjectId(req.params.id),
+						},
+						req.body
+					);
+				} catch (error) {
+					res.status(404).send("Not found");
+				}
 
 				res.status(201);
 			} else {
@@ -216,10 +225,15 @@ module.exports = {
 	deleteEvent: async (req, res) => {
 		dbUtil.connectToDB(async function (db, err) {
 			const collection = db.collection("event");
-			collection.deleteOne({
-				_id: new ObjectId(req.params.id),
-			});
-			res.status(204);
+
+			try {
+				collection.deleteOne({
+					_id: new ObjectId(req.params.id),
+				});
+				res.status(204);
+			} catch (error) {
+				res.status(404).send("Not found");
+			}
 			res.end();
 		});
 	},
@@ -280,14 +294,18 @@ module.exports = {
 
 			if (dataValid) {
 				const collection = db.collection("resource");
-				await collection.findOneAndReplace(
-					{
-						_id: new ObjectId(req.params.id),
-					},
-					req.body
-				);
 
-				res.status(201);
+				try {
+					await collection.findOneAndReplace(
+						{
+							_id: new ObjectId(req.params.id),
+						},
+						req.body
+					);
+					res.status(201);
+				} catch (error) {
+					res.status(404).send("Not found");
+				}
 			} else {
 				res.status(400);
 			}
@@ -299,10 +317,15 @@ module.exports = {
 	deleteResource: async (req, res) => {
 		dbUtil.connectToDB(async function (db, err) {
 			const collection = db.collection("resource");
-			collection.deleteOne({
-				_id: new ObjectId(req.params.id),
-			});
-			res.status(204);
+
+			try {
+				collection.deleteOne({
+					_id: new ObjectId(req.params.id),
+				});
+				res.status(204);
+			} catch (error) {
+				res.status(404).send("Not found");
+			}
 			res.end();
 		});
 	},
