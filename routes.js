@@ -15,7 +15,7 @@ module.exports = {
 		const { username, password } = req.body;
 
 		if (!(username && password)) {
-			res.send("Invalid Credentials").status(400);
+			res.status(401).send("Invalid Credentials");
 			res.end();
 		} else {
 			await dbUtil.connectToDB(async function (db, err) {
@@ -35,22 +35,18 @@ module.exports = {
 							}
 						);
 
-						res.json({
-							success: true,
-							message: "Authentication successful",
-							user: {
-								username: user.username,
-								token: token,
-							},
-						}).status(200);
+						res.status(200).json({
+							username: user.username,
+							token: token,
+						});
 					} else {
-						res.json({
+						res.status(401).json({
 							success: false,
 							message: "Authentication failed",
-						}).status(400);
+						});
 					}
 				} else {
-					res.status(400);
+					res.status(401);
 				}
 				res.end();
 			});
@@ -61,7 +57,7 @@ module.exports = {
 		dbUtil.connectToDB(async function (db, err) {
 			const collection = db.collection("member");
 			const result = await collection.find({}).toArray();
-			res.send(result).status(200);
+			res.status(200).send(result);
 			res.end();
 		});
 	},
@@ -78,12 +74,12 @@ module.exports = {
 				});
 
 				if (result) {
-					res.send(result).status(200);
+					res.status(200).send(result);
 				} else {
-					res.send("Not found").status(404);
+					res.status(404).send("Not found");
 				}
 			} catch (error) {
-				res.send("Not found").status(404);
+				res.status(404).send("Not found");
 			}
 
 			res.end();
@@ -139,7 +135,7 @@ module.exports = {
 				});
 				res.status(204);
 			} catch (error) {
-				res.send("Not found").status(404);
+				res.status(404).send("Not found");
 			}
 			res.end();
 		});
@@ -149,7 +145,7 @@ module.exports = {
 		dbUtil.connectToDB(async function (db, err) {
 			const collection = db.collection("event");
 			const result = await collection.find({}).toArray();
-			res.send(result).status(200);
+			res.status(200).send(result);
 			res.end();
 		});
 	},
@@ -166,12 +162,12 @@ module.exports = {
 				});
 
 				if (result) {
-					res.send(result).status(200);
+					res.status(200).send(result);
 				} else {
-					res.send("Not found").status(404);
+					res.status(404).send("Not found");
 				}
 			} catch (error) {
-				res.send("Not found").status(404);
+				res.status(404).send("Not found");
 			}
 
 			res.end();
@@ -233,7 +229,7 @@ module.exports = {
 			const collection = db.collection("resource");
 			const result = await collection.find({}).toArray();
 			res.send(result);
-			res.end().status(200);
+			res.status(200).end();
 		});
 	},
 
@@ -249,12 +245,12 @@ module.exports = {
 				});
 
 				if (result) {
-					res.send(result).status(200);
+					res.status(200).send(result);
 				} else {
 					res.status(404);
 				}
 			} catch (error) {
-				res.send("Not found").status(404);
+				res.status(404).send("Not found");
 			}
 
 			res.end();

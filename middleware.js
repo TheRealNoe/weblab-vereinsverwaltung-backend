@@ -7,20 +7,18 @@ const verifyToken = (req, res, next) => {
 	const token = authHeader && authHeader.split(" ")[1];
 
 	if (!token) {
-		return res
-			.json({
-				success: false,
-				message: "A token is required for authentication",
-			})
-			.status(403);
+		return res.status(403).json({
+			success: false,
+			message: "A token is required for authentication",
+		});
 	}
 	try {
 		const decoded = jwt.verify(token, config.TOKEN_KEY);
 		req.user = decoded;
 	} catch (err) {
 		return res
-			.json({ success: false, message: "Invalid Token" })
-			.status(401);
+			.status(401)
+			.json({ success: false, message: "Invalid Token" });
 	}
 	return next();
 };

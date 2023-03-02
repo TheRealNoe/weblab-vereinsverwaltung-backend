@@ -11,9 +11,9 @@ server.use(cors({ origin: "http://localhost:4200" }));
 
 server.post("/api/v1/login", routes.login);
 
-server.get("/api/v1/member", routes.getMembers);
+server.get("/api/v1/member", middleware.verifyToken, routes.getMembers);
 
-server.get("/api/v1/member/:id", routes.getMember);
+server.get("/api/v1/member/:id", middleware.verifyToken, routes.getMember);
 
 server.post("/api/v1/member", routes.postMember);
 
