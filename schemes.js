@@ -18,11 +18,12 @@ const eventSchema = {
 	properties: {
 		name: { type: "string", minLength: 2, maxLength: 30 },
 		location: { type: "string", minLength: 2, maxLength: 30 },
-		time: { type: "string", format: "date" },
+		starttime: { type: "string", format: "date" },
+		endtime: { type: "string", format: "date" },
 		duration: { type: "string", maxLength: 15 },
 		information: { type: "string", maxLength: 150 },
 	},
-	required: ["name", "location", "time"],
+	required: ["name", "location", "starttime", "endtime"],
 };
 
 const resourceSchema = {
