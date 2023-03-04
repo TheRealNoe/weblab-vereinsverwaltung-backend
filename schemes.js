@@ -1,17 +1,14 @@
 const memberSchema = {
 	type: "object",
 	properties: {
-		prename: { type: "string", minLength: 2 },
-		name: { type: "string", minLength: 2 },
+		prename: { type: "string", minLength: 2, maxLength: 20 },
+		name: { type: "string", minLength: 2, maxLength: 30 },
 		birthday: { type: "string", format: "date" },
-		street: { type: "string" },
-		postcode: { type: "string" },
-		city: { type: "string" },
-		email: { type: "string" },
-		street: { type: "string", minLength: 5 },
-		postcode: { type: "string", minLength: 4 },
-		city: { type: "string", minLength: 2 },
-		email: { type: "string", format: "email" },
+		street: { type: "string", minLength: 5, maxLength: 40 },
+		postcode: { type: "string", minLength: 4, maxLength: 12 },
+		city: { type: "string", minLength: 2, maxLength: 30 },
+		email: { type: "string", format: "email", maxLength: 40 },
+		phone: { type: "string", minLength: 6, maxLength: 15 },
 	},
 	required: ["prename", "name", "birthday"],
 };
@@ -19,11 +16,11 @@ const memberSchema = {
 const eventSchema = {
 	type: "object",
 	properties: {
-		name: { type: "string", minLength: 2 },
-		location: { type: "string", minLength: 2 },
+		name: { type: "string", minLength: 2, maxLength: 30 },
+		location: { type: "string", minLength: 2, maxLength: 30 },
 		time: { type: "string", format: "date" },
-		duration: { type: "string" },
-		information: { type: "string" },
+		duration: { type: "string", maxLength: 15 },
+		information: { type: "string", maxLength: 150 },
 	},
 	required: ["name", "location", "time"],
 };
@@ -31,10 +28,10 @@ const eventSchema = {
 const resourceSchema = {
 	type: "object",
 	properties: {
-		name: { type: "string", minLength: 2 },
+		name: { type: "string", minLength: 2, maxLength: 30 },
 		amount: { type: "number", minimum: 0, maximum: 10000000 },
-		location: { type: "string", minLength: 2 },
-		information: { type: "string" },
+		location: { type: "string", minLength: 2, maxLength: 30 },
+		information: { type: "string", maxLength: 150 },
 	},
 	required: ["name", "amount", "location"],
 };
