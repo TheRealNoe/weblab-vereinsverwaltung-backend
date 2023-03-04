@@ -53,6 +53,26 @@ module.exports = {
 		}
 	},
 
+	getStatsAmount: async (req, res) => {
+		dbUtil.connectToDB(async function (db, err) {
+			var collection = db.collection("member");
+			const memberCount = await collection.count();
+
+			collection = db.collection("event");
+			const eventCount = await collection.count();
+
+			collection = db.collection("resource");
+			const resourceCount = await collection.count();
+
+			res.status(200).json({
+				amountMembers: memberCount,
+				amountEvents: eventCount,
+				amountResources: resourceCount,
+			});
+			res.end();
+		});
+	},
+
 	getMembers: async (req, res) => {
 		dbUtil.connectToDB(async function (db, err) {
 			const collection = db.collection("member");
