@@ -18,8 +18,8 @@ const eventSchema = {
 	properties: {
 		name: { type: "string", minLength: 2, maxLength: 30 },
 		location: { type: "string", minLength: 2, maxLength: 30 },
-		starttime: { type: "string", format: "date" },
-		endtime: { type: "string", format: "date" },
+		starttime: { type: "string", format: "date-time" },
+		endtime: { type: "string", format: "date-time" },
 		duration: { type: "string", maxLength: 15 },
 		information: { type: "string", maxLength: 150 },
 	},
