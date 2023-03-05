@@ -8,7 +8,12 @@ const memberSchema = {
 		postcode: { type: "string", minLength: 4, maxLength: 12 },
 		city: { type: "string", minLength: 2, maxLength: 30 },
 		email: { type: "string", format: "email", maxLength: 40 },
-		phone: { type: "string", minLength: 6, maxLength: 15 },
+		phone: {
+			type: "string",
+			minLength: 6,
+			maxLength: 15,
+			pattern: "\\+?\\d+$",
+		},
 	},
 	required: ["prename", "name", "birthday"],
 };

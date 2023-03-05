@@ -92,7 +92,7 @@ module.exports = {
 
 	getMembers: async (req, res) => {
 		dbUtil.connectToDB(async function (db, err) {
-			const collection = db.collection("event");
+			const collection = db.collection("member");
 			const result = await collection.find({}).toArray();
 			res.status(200).send(result);
 			res.end();
