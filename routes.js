@@ -10,6 +10,8 @@ const addFormats = require("ajv-formats");
 addFormats(ajv);
 const { memberSchema, eventSchema, resourceSchema } = require("./schemes.js");
 
+const moment = require("moment");
+
 module.exports = {
 	login: async (req, res) => {
 		const { username, password } = req.body;
@@ -73,9 +75,24 @@ module.exports = {
 		});
 	},
 
+	getUpcomingEvents: async (req, res) => {
+		dbUtil.connectToDB(async function (db, err) {
+			const collection = db.collection("event");
+			const result = await collection
+				.find({
+					endtime: { $gte: moment().format("YYYY-MM-DDTHH:mm:ss") },
+				})
+				.sort({ endtime: 1 })
+				.limit(5)
+				.toArray();
+			res.status(200).send(result);
+			res.end();
+		});
+	},
+
 	getMembers: async (req, res) => {
 		dbUtil.connectToDB(async function (db, err) {
-			const collection = db.collection("member");
+			const collection = db.collection("event");
 			const result = await collection.find({}).toArray();
 			res.status(200).send(result);
 			res.end();

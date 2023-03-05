@@ -17,6 +17,12 @@ server.get(
 	routes.getStatsAmount
 );
 
+server.get(
+	"/api/v1/getUpcomingEvents",
+	middleware.verifyToken,
+	routes.getUpcomingEvents
+);
+
 server.get("/api/v1/member", middleware.verifyToken, routes.getMembers);
 
 server.get("/api/v1/member/:id", middleware.verifyToken, routes.getMember);
