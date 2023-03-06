@@ -1,14 +1,18 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const dbUtil = require("./dbUtil");
+const dbo = require("./util/db");
 const { ObjectId } = require("mongodb");
 
 const Ajv = require("ajv");
 const ajv = new Ajv();
 const addFormats = require("ajv-formats");
 addFormats(ajv);
-const { memberSchema, eventSchema, resourceSchema } = require("./schemes.js");
+const {
+	memberSchema,
+	eventSchema,
+	resourceSchema,
+} = require("./util/schemes.js");
 
 const moment = require("moment");
 
@@ -20,7 +24,7 @@ module.exports = {
 			res.status(401).send("Invalid Credentials");
 			res.end();
 		} else {
-			await dbUtil.connectToDB(async function (db, err) {
+			await dbo.connectToDB(async function (db, err) {
 				if (!err) {
 					let user = await db
 						.collection("user")
@@ -56,7 +60,7 @@ module.exports = {
 	},
 
 	getStatsAmount: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			var collection = db.collection("member");
 			const memberCount = await collection.count();
 
@@ -76,7 +80,7 @@ module.exports = {
 	},
 
 	getUpcomingEvents: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("event");
 			const result = await collection
 				.find({
@@ -91,7 +95,7 @@ module.exports = {
 	},
 
 	getMembers: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("member");
 			const result = await collection.find({}).toArray();
 			res.status(200).send(result);
@@ -100,7 +104,7 @@ module.exports = {
 	},
 
 	getMember: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("member");
 
 			let result = null;
@@ -124,7 +128,7 @@ module.exports = {
 	},
 
 	postMember: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const dataValid = ajv.validate(memberSchema, req.body);
 
 			if (dataValid) {
@@ -141,7 +145,7 @@ module.exports = {
 	},
 
 	putMember: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const dataValid = ajv.validate(memberSchema, req.body);
 
 			if (dataValid) {
@@ -167,7 +171,7 @@ module.exports = {
 	},
 
 	deleteMember: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("member");
 
 			try {
@@ -183,7 +187,7 @@ module.exports = {
 	},
 
 	getEvents: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("event");
 			const result = await collection.find({}).toArray();
 			res.status(200).send(result);
@@ -192,7 +196,7 @@ module.exports = {
 	},
 
 	getEvent: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("event");
 
 			let result = null;
@@ -216,7 +220,7 @@ module.exports = {
 	},
 
 	postEvent: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const dataValid = ajv.validate(eventSchema, req.body);
 
 			if (dataValid) {
@@ -233,7 +237,7 @@ module.exports = {
 	},
 
 	putEvent: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const dataValid = ajv.validate(eventSchema, req.body);
 
 			if (dataValid) {
@@ -260,7 +264,7 @@ module.exports = {
 	},
 
 	deleteEvent: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("event");
 
 			try {
@@ -276,7 +280,7 @@ module.exports = {
 	},
 
 	getResources: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("resource");
 			const result = await collection.find({}).toArray();
 			res.send(result);
@@ -285,7 +289,7 @@ module.exports = {
 	},
 
 	getResource: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("resource");
 
 			let result = null;
@@ -309,7 +313,7 @@ module.exports = {
 	},
 
 	postResource: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const dataValid = ajv.validate(resourceSchema, req.body);
 
 			if (dataValid) {
@@ -326,7 +330,7 @@ module.exports = {
 	},
 
 	putResource: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const dataValid = ajv.validate(resourceSchema, req.body);
 
 			if (dataValid) {
@@ -352,7 +356,7 @@ module.exports = {
 	},
 
 	deleteResource: async (req, res) => {
-		dbUtil.connectToDB(async function (db, err) {
+		dbo.connectToDB(async function (db, err) {
 			const collection = db.collection("resource");
 
 			try {
