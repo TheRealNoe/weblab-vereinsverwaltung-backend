@@ -21,7 +21,7 @@ module.exports = {
 		const { username, password } = req.body;
 
 		if (!(username && password)) {
-			res.status(401).send("Invalid Credentials");
+			res.status(401);
 			res.end();
 		} else {
 			await dbo.connectToDB(async function (db, err) {
@@ -46,10 +46,7 @@ module.exports = {
 							token: token,
 						});
 					} else {
-						res.status(401).json({
-							success: false,
-							message: "Authentication failed",
-						});
+						res.status(401);
 					}
 				} else {
 					res.status(401);
@@ -117,10 +114,10 @@ module.exports = {
 				if (result) {
 					res.status(200).send(result);
 				} else {
-					res.status(404).send("Not found");
+					res.status(404);
 				}
 			} catch (error) {
-				res.status(404).send("Not found");
+				res.status(404);
 			}
 
 			res.end();
@@ -158,7 +155,7 @@ module.exports = {
 						req.body
 					);
 				} catch (error) {
-					res.status(404).send("Not found");
+					res.status(404);
 				}
 
 				res.status(201);
@@ -180,7 +177,7 @@ module.exports = {
 				});
 				res.status(204);
 			} catch (error) {
-				res.status(404).send("Not found");
+				res.status(404);
 			}
 			res.end();
 		});
@@ -209,10 +206,10 @@ module.exports = {
 				if (result) {
 					res.status(200).send(result);
 				} else {
-					res.status(404).send("Not found");
+					res.status(404);
 				}
 			} catch (error) {
-				res.status(404).send("Not found");
+				res.status(404);
 			}
 
 			res.end();
@@ -251,7 +248,7 @@ module.exports = {
 						req.body
 					);
 				} catch (error) {
-					res.status(404).send("Not found");
+					res.status(404);
 				}
 
 				res.status(201);
@@ -273,7 +270,7 @@ module.exports = {
 				});
 				res.status(204);
 			} catch (error) {
-				res.status(404).send("Not found");
+				res.status(404);
 			}
 			res.end();
 		});
@@ -305,7 +302,7 @@ module.exports = {
 					res.status(404);
 				}
 			} catch (error) {
-				res.status(404).send("Not found");
+				res.status(404);
 			}
 
 			res.end();
@@ -345,7 +342,7 @@ module.exports = {
 					);
 					res.status(201);
 				} catch (error) {
-					res.status(404).send("Not found");
+					res.status(404);
 				}
 			} else {
 				res.status(400);
@@ -365,7 +362,7 @@ module.exports = {
 				});
 				res.status(204);
 			} catch (error) {
-				res.status(404).send("Not found");
+				res.status(404);
 			}
 			res.end();
 		});

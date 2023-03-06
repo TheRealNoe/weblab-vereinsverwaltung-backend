@@ -25,7 +25,6 @@ const eventSchema = {
 		location: { type: "string", minLength: 2, maxLength: 30 },
 		starttime: { type: "string", format: "date-time" },
 		endtime: { type: "string", format: "date-time" },
-		duration: { type: "string", maxLength: 15 },
 		information: { type: "string", maxLength: 150 },
 	},
 	required: ["name", "location", "starttime", "endtime"],
