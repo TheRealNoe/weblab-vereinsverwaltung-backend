@@ -12,13 +12,13 @@ server.use(cors({ origin: "http://localhost:4200" }));
 server.post("/api/v1/login", routes.login);
 
 server.get(
-	"/api/v1/statsAmounts",
+	"/api/v1/stats/amounts",
 	middleware.verifyToken,
 	routes.getStatsAmount
 );
 
 server.get(
-	"/api/v1/getUpcomingEvents",
+	"/api/v1/stats/upcomingEvents",
 	middleware.verifyToken,
 	routes.getUpcomingEvents
 );
