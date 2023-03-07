@@ -1,5 +1,5 @@
 # Web Programming Lab - Vereinsverwaltung Backend
-In diesem Repository enthalten ist das Backend des Projekts "Vereinsverwaltung" im Modul Web Programming Lab. Die Ausführumgebung ist dabei [NodeJS](https://nodejs.org/) LTS v18.14.0.
+In diesem Repository enthalten, ist das Backend des Projekts "Vereinsverwaltung" im Modul Web Programming Lab. Die Ausführumgebung ist dabei [NodeJS](https://nodejs.org/) LTS v18.14.0.
 ## Installation
 1. ```git clone https://github.com/TheRealNoe/weblab-vereinsverwaltung-backend.git```
 2. ```npm ci```
@@ -8,9 +8,9 @@ In diesem Repository enthalten ist das Backend des Projekts "Vereinsverwaltung" 
 2. Erstellen der .env Datei mit folgenden Variabeln:
     - ```MONGODB_CONN_STRING```: Verbindungsstring zu MonogDB-Datenbank
     - ```MONGODB_NAME```: Datenbankname
-    - ```TOKEN_KEY```: Privater Schlüssel zur Erzeugung und Prüfung von Passwörter
+    - ```TOKEN_KEY```: Privater Schlüssel zur Erzeugung und Prüfung von Passwörtern
 3. ```npm run start``` oder mit Nodemon ```npm run devserver```
-4. Das Backend ist nun auf dem Port 8000 verfügbar und kann vom Frontend verwendet werden
+4. Das Backend ist nun auf dem Port 8000 verfügbar und kann vom Frontend verwendet werden.
 ## Tooling
 - [ajv](https://www.npmjs.com/package/ajv) v8.12.0
 - [ajv-formats](https://www.npmjs.com/package/ajv-formats) v2.1.1
